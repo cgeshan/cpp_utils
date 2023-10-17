@@ -14,8 +14,7 @@
 # Build files #
 ###############
 build/
-matplotplusplus/
-test/
+tests/
 
 # VS Code generated files #
 ###########################
@@ -30,17 +29,6 @@ test/
 ######################
 .DS_Store
 .DS_Store?
-
-# PyCache Files #
-##################
-__pycache__/
-*.pyc
-
-# NumPy Files #
-###############
-*.npx
-*.npy
-*.npz
 
 # Ignore All Video Files #
 ##########################
