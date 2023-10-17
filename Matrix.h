@@ -1,11 +1,12 @@
-#ifndef MATRIX_IS_INCLUDED
-#define MATRIX_IS_INCLUDED
+#ifndef MATRIX_H
+#define MATRIX_H
 
 #include <iostream>
 #include <fstream>
 #include <stdexcept>
 #include <cmath>
 #include <vector>
+#include <random>
 
 template <class T>
 class Matrix
@@ -19,6 +20,13 @@ public:
     {
         this->rows = 0;
         this->cols = 0;
+        this->pMatrix = new T[rows * cols];
+    }
+
+    Matrix(int size)
+    {
+        this->rows = size;
+        this->cols = size;
         this->pMatrix = new T[rows * cols];
     }
 
@@ -52,7 +60,6 @@ public:
         }
         this->cols = values[0].size();
 
-        // Allocate memory and copy values
         this->pMatrix = new T[rows * cols];
         for (int i = 0; i < rows; i++)
         {
@@ -74,10 +81,9 @@ public:
             throw std::invalid_argument("Size of the values vector must match the specified matrix dimensions.");
         }
 
-        this->rows = rowSize; // Update rows
-        this->cols = colSize; // Update cols
+        this->rows = rowSize;
+        this->cols = colSize;
 
-        // Allocate memory and copy values
         this->pMatrix = new T[rows * cols];
         for (int i = 0; i < rows; i++)
         {
@@ -96,7 +102,327 @@ public:
         }
     }
 
-    T &operator[](int index)
+    void fill(const T &value)
+    {
+        for (int i = 0; i < this->rows * this->cols; i++)
+        {
+            pMatrix[i] = value;
+        }
+    }
+
+    static Matrix<T> zeros(int rows, int cols)
+    {
+        Matrix<T> zeros(rows, cols);
+        zeros.fill(0);
+
+        return zeros;
+    }
+
+    static Matrix<T> zeros(int size)
+    {
+        Matrix<T> zeros(size, size);
+        zeros.fill(0);
+
+        return zeros;
+    }
+
+    static Matrix<T> ones(int rows, int cols)
+    {
+        Matrix<T> ones(rows, cols);
+        ones.fill(1);
+
+        return ones;
+    }
+
+    static Matrix<T> ones(int size)
+    {
+        Matrix<T> ones(size, size);
+        ones.fill(1);
+
+        return ones;
+    }
+
+    static Matrix<T> identity(int rows, int cols)
+    {
+        if (rows != cols)
+        {
+            throw std::invalid_argument("Identity matrix must also be a square matrix.");
+        }
+        Matrix<T> identity(rows, cols);
+        identity.fill(0);
+
+        for (int i = 0; i < rows; i++)
+        {
+            identity(i, i) = 1;
+        }
+
+        return identity;
+    }
+
+    static Matrix<T> identity(int size)
+    {
+        Matrix<T> identity(size, size);
+        identity.fill(0);
+
+        for (int i = 0; i < size; i++)
+        {
+            identity(i, i) = 1;
+        }
+
+        return identity;
+    }
+
+    static Matrix<T> random(const T &low, const T &high, int rows, int cols)
+    {
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_real_distribution<T> distribution(low, high);
+
+        Matrix<T> randomMatrix(rows, cols);
+        for (int i = 0; i < rows * cols; i++)
+        {
+            randomMatrix.pMatrix[i] = distribution(gen);
+        }
+        return randomMatrix;
+    }
+
+    T getMin() const
+    {
+        if (rows * cols == 0)
+        {
+            throw std::runtime_error("Matrix is empty");
+        }
+        T min = pMatrix[0];
+        for (int i = 0; i < rows * cols; i++)
+        {
+            if (pMatrix[i] < min)
+            {
+                min = pMatrix[i];
+            }
+        }
+        return min;
+    }
+
+    T getMax() const
+    {
+        if (rows * cols == 0)
+        {
+            throw std::runtime_error("Matrix is empty");
+        }
+        T max = pMatrix[0];
+        for (int i = 0; i < rows * cols; i++)
+        {
+            if (pMatrix[i] > max)
+            {
+                max = pMatrix[i];
+            }
+        }
+        return max;
+    }
+
+    T mean() const
+    {
+        if (rows * cols == 0)
+        {
+            throw std::runtime_error("Matrix is empty");
+        }
+        T sum = pMatrix[0];
+
+        for (int i = 1; i < rows * cols; i++)
+        {
+            sum += pMatrix[i];
+        }
+
+        return sum / (rows * cols);
+    }
+
+    T median()
+    {
+        if (rows * cols == 0)
+        {
+            throw std::runtime_error("Matrix is empty.");
+        }
+
+        std::vector<T> matrixVector;
+        matrixVector.reserve(rows * cols);
+
+        for (int i = 0; i < rows * cols; i++)
+        {
+            matrixVector.push_back(pMatrix[i]);
+        }
+
+        std::sort(matrixVector.begin(), matrixVector.end());
+
+        if (0 != (rows * cols) % 2)
+        {
+            return matrixVector[(rows * cols) / 2];
+        }
+        else
+        {
+            T left = matrixVector[(rows * cols) / 2];
+            T right = matrixVector[(rows * cols) / 2 - 1];
+            return (left + right) / 2;
+        }
+    }
+
+    void sort() const
+    {
+        for (int i = 0; i < rows * cols - 1; i++)
+        {
+            for (int j = 0; j < rows * cols - i - 1; j++)
+            {
+                if (pMatrix[j] > pMatrix[j + 1])
+                {
+                    T temp = pMatrix[j];
+                    pMatrix[j] = pMatrix[j + 1];
+                    pMatrix[j + 1] = temp;
+                }
+            }
+        }
+    }
+
+    void reverseSort() const
+    {
+        for (int i = 0; i < rows * cols - 1; i++)
+        {
+            for (int j = 0; j < rows * cols - i - 1; j++)
+            {
+                if (pMatrix[j] < pMatrix[j + 1])
+                {
+                    T temp = pMatrix[j];
+                    pMatrix[j] = pMatrix[j + 1];
+                    pMatrix[j + 1] = temp;
+                }
+            }
+        }
+    }
+
+    void swapVals(const T &a, const T &b)
+    {
+        for (int i = 0; i < rows * cols; i++)
+        {
+            if (pMatrix[i] == a)
+            {
+                pMatrix[i] = b;
+            }
+            else if (pMatrix[i] == b)
+            {
+                pMatrix[i] = a;
+            }
+        }
+    }
+
+    Matrix<T> abs() const
+    {
+        Matrix<T> absMatrix(rows, cols);
+        for (int i = 0; i < rows * cols; i++)
+        {
+            if (pMatrix[i] < 0)
+            {
+                absMatrix[i] = pMatrix[i] * -1;
+            }
+            else
+            {
+                absMatrix[i] = pMatrix[i];
+            }
+        }
+        return absMatrix;
+    }
+
+    // argmin
+
+    // argmax
+
+    Matrix<T> hstack(const Matrix<T> &mat) const
+    {
+        if (rows != mat.rows)
+        {
+            throw std::invalid_argument("Matrix A and B must have the same number of rows");
+        }
+        Matrix<T> hStacked(rows, cols + mat.cols);
+        for (int i = 0; i < hStacked.rows; i++)
+        {
+            for (int j = 0; j < hStacked.cols; j++)
+            {
+                if (j < rows)
+                {
+                    hStacked(i, j) = pMatrix[i * cols + j];
+                }
+                else
+                {
+                    hStacked(i, j) = mat(i, j - rows);
+                }
+            }
+        }
+
+        return hStacked;
+    }
+
+    Matrix<T> vstack(const Matrix<T> &mat) const
+    {
+        if (cols != mat.cols)
+        {
+            throw std::invalid_argument("Matrix A and B must have the same number of rows");
+        }
+        Matrix<T> vStacked(rows + mat.rows, cols);
+        for (int i = 0; i < vStacked.rows; i++)
+        {
+            for (int j = 0; j < vStacked.cols; j++)
+            {
+                if (i < rows)
+                {
+                    vStacked(i, j) = pMatrix[i * cols + j];
+                }
+                else
+                {
+                    vStacked(i, j) = mat(i - rows, j);
+                }
+            }
+        }
+
+        return vStacked;
+    }
+
+    // stdDev
+
+    // variance
+
+    void reshape(int rowsNew, int colsNew)
+    {
+        if (rowsNew * colsNew != rows * cols)
+        {
+            throw std::invalid_argument("New shape must have the same number of elements as the original matrix.");
+        }
+
+        Matrix<T> tmp(rowsNew, colsNew);
+
+        int idx = 0;
+        for (int i = 0; i < rowsNew; i++)
+        {
+            for (int j = 0; j < colsNew; j++)
+            {
+                tmp(i, j) = pMatrix[idx];
+                idx++;
+            }
+        }
+
+        delete[] pMatrix;
+
+        rows = rowsNew;
+        cols = colsNew;
+        pMatrix = new T[rows * cols];
+
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < cols; j++)
+            {
+                pMatrix[i * cols + j] = tmp(i, j);
+            }
+        }
+    }
+
+    T &
+    operator[](int index)
     {
         if (index < 0 || index >= rows * cols)
         {
@@ -605,95 +931,9 @@ public:
         return result;
     }
 
-    // void LUDecomp(Matrix<T> &L, Matrix<T> &U)
-    // {
-    //     if (this->getRowSize() != this->getColSize())
-    //     {
-    //         throw std::invalid_argument("Matrix must be square for LU decomposition.");
-    //     }
-
-    //     int size = this->getRowSize();
-
-    //     L = Matrix<T>(size, size);
-    //     U = Matrix<T>(size, size);
-
-    //     for (int i = 0; i < size; i++)
-    //     {
-    //         // U matrix
-    //         for (int j = i; j < size; j++)
-    //         {
-    //             T sum = 0;
-    //             for (int k = 0; k < i; k++)
-    //             {
-    //                 sum += L(i, k) * U(k, j);
-    //             }
-    //             U(i, j) = (*this)(i, j) - sum;
-    //         }
-
-    //         // L matrix
-    //         for (int j = i; j < size; j++)
-    //         {
-    //             if (i == j)
-    //                 L(i, j) = 1;
-    //             else
-    //             {
-    //                 T sum = 0;
-    //                 for (int k = 0; k < i; k++)
-    //                 {
-    //                     sum += L(j, k) * U(k, i);
-    //                 }
-    //                 L(j, i) = ((*this)(j, i) - sum) / U(i, i);
-    //             }
-    //         }
-    //     }
-    // }
-
-    // Matrix<T> choleskyDecomp() const
-    // {
-    //     if (*this != this->transpose())
-    //     {
-    //         throw std::invalid_argument("Matrix must be symmetric for Cholesky decomposition.");
-    //     }
-
-    //     Matrix result = *this;
-
-    //     for (int i = 0; i < this->rows; i++)
-    //     {
-    //         for (int j = 0; j < this->cols; j++)
-    //         {
-    //             if (i == j)
-    //             {
-    //                 for (int k = 0; k < j; k++)
-    //                 {
-    //                     result(i, j) -= pow(result(i, k), 2);
-    //                 }
-
-    //                 result(i, j) = sqrt(result(i, j));
-    //             }
-
-    //             else if (i > j)
-    //             {
-    //                 for (int k = 0; k < j; k++)
-    //                 {
-    //                     result(i, j) -= result(i, k) * result(j, k);
-    //                 }
-
-    //                 result(i, j) /= result(j, j);
-    //             }
-
-    //             else
-    //             {
-    //                 result(i, j) = T();
-    //             }
-    //         }
-    //     }
-
-    //     return result;
-    // }
-
     /*
-        Stream operators
-    */
+    Stream operators
+*/
 
     template <class U>
     friend std::ostream &operator<<(std::ostream &os, const Matrix<U> &matrix);
@@ -763,16 +1003,5 @@ std::ifstream &operator>>(std::ifstream &ifs, Matrix<T> &matrix)
     }
     return ifs;
 }
-
-template <class T>
-class SquareMatrix : public Matrix<T>
-{
-private:
-    int rows, cols;
-    T *pMatrix;
-
-public:
-    SquareMatrix(int size) : Matrix<T>(size, size) {}
-};
 
 #endif
