@@ -1,7 +1,6 @@
-#include <iostream>
-#include "../src/Matrix.h"
+#include "../src/cgMatrix.h"
 
-int main()
+void testConstructors()
 {
     // Test 1: Matrix construction and element access
     std::cout << "Test 1: Matrix construction and element access..." << std::endl;
@@ -35,8 +34,44 @@ int main()
     assert(mat4(0, 1) == 2);
     assert(mat4(1, 2) == 6);
 
+    // Test 28: Constructing a zeros matrix
+    std::cout << "Test 28: Constructing a zeros matrix..." << std::endl;
+    Matrix<int> zeros = Matrix<int>::zeros(2, 3);
+    assert(zeros(0, 0) == 0);
+    assert(zeros(0, 2) == 0);
+
+    // Test 29: Constructing a ones matrix
+    std::cout << "Test 29: Constructing a ones matrix..." << std::endl;
+    Matrix<int> ones = Matrix<int>::ones(2, 3);
+    assert(ones(0, 0) == 1);
+    assert(ones(0, 2) == 1);
+
+    // Test 30: Constructing an identity matrix
+    std::cout << "Test 30: Constructing an identity matrix..." << std::endl;
+    Matrix<int> identity1 = Matrix<int>::identity(3, 3);
+    Matrix<int> identity2 = Matrix<int>::identity(5);
+    assert(identity1(0, 0) == 1);
+    assert(identity1(1, 1) == 1);
+    assert(identity1(0, 1) == 0);
+    assert(identity2(2, 2) == 1);
+    assert(identity2(4, 4) == 1);
+    assert(identity2(1, 2) == 0);
+
+    // Test case 31: Test Matrix::random
+    std::cout << "Test 31: Constructing a random matrix..." << std::endl;
+    Matrix<float> randomMatrix = Matrix<float>::random(0.0f, 10.0f, 10, 10);
+    float val1 = randomMatrix(0, 0);
+    float val2 = randomMatrix(1, 1);
+    assert(val1 >= 0.0f && val1 <= 10.0f);
+    assert(val2 >= 0.0f && val2 <= 10.0f);
+}
+
+void testOperators()
+{
     // Test 5: Copy assignment operator
     std::cout << "Test 5: Copy assignment operator..." << std::endl;
+    std::vector<int> values2 = {1, 2, 3, 4, 5, 6};
+    Matrix<int> mat4(2, 3, values2);
     Matrix<int> mat5 = mat4;
     assert(mat5 == mat4);
 
@@ -119,6 +154,18 @@ int main()
     mat15 *= scalar2;
     assert(mat15 == Matrix<int>({{3, 6, 9}, {12, 15, 18}, {21, 24, 27}}));
 
+    // Test 18: Inequality operator
+    std::cout << "Test 18: Inequality operator..." << std::endl;
+    Matrix<int> mat17({{1, 2}, {3, 4}});
+    Matrix<int> mat18({{1, 2}, {3, 4}});
+    Matrix<int> mat19({{1, 2, 3}, {4, 5, 6}});
+
+    assert(mat17 != mat19);
+    assert(!(mat17 != mat18));
+}
+
+void testLinearAlgebra()
+{
     // Test 17: Matrix transpose
     std::cout << "Test 17: Matrix transpose..." << std::endl;
     Matrix<int> mat16(3, 2);
@@ -130,7 +177,6 @@ int main()
     mat16(2, 1) = 6;
 
     Matrix<int> transposed16 = mat16.transpose();
-
     assert(transposed16.getRowSize() == 2);
     assert(transposed16.getColSize() == 3);
     assert(transposed16(0, 0) == 1);
@@ -139,15 +185,6 @@ int main()
     assert(transposed16(1, 0) == 2);
     assert(transposed16(1, 1) == 4);
     assert(transposed16(1, 2) == 6);
-
-    std::cout << "Test 18: Inequality operator..." << std::endl;
-
-    Matrix<int> mat17({{1, 2}, {3, 4}});
-    Matrix<int> mat18({{1, 2}, {3, 4}});
-    Matrix<int> mat19({{1, 2, 3}, {4, 5, 6}});
-
-    assert(mat17 != mat19);    // Matrices have different sizes
-    assert(!(mat17 != mat18)); // Matrices are equal
 
     // Test 19: Determinant of a square matrix
     std::cout << "Test 19: Determinant of a square matrix..." << std::endl;
@@ -185,23 +222,19 @@ int main()
     // Test 22: Full rank of a matrix
     std::cout << "Test 22: Full rank of a matrix..." << std::endl;
     Matrix<int> mat23({{1, 2, 3}, {4, 5, 6}, {7, 8, 9}});
-    assert(!mat23.isFullRank());
-
     Matrix<int> mat24({{1, 0, 0}, {0, 2, 0}, {0, 0, 3}});
+    assert(!mat23.isFullRank());
     assert(mat24.isFullRank());
 
     // Test 23: Get rank of a matrix
     std::cout << "Test 23: Get rank of a matrix..." << std::endl;
     Matrix<int> mat25({{1, 2, 3}, {4, 5, 6}, {7, 8, 9}});
-    assert(mat25.getRank() == 2);
-
     Matrix<int> mat26({{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}});
-    assert(mat26.getRank() == 2);
-
     Matrix<int> mat27({{1, 0, 0}, {0, 2, 0}, {0, 0, 3}});
-    assert(mat27.getRank() == 3);
-
     Matrix<int> mat28({{0, 0, 0}, {0, 0, 0}, {0, 0, 0}});
+    assert(mat25.getRank() == 2);
+    assert(mat26.getRank() == 2);
+    assert(mat27.getRank() == 3);
     assert(mat28.getRank() == 0);
 
     // Test 24: Swap rows in a matrix
@@ -242,38 +275,10 @@ int main()
     assert(diagonal(0, 1) == 0.0);
     assert(diagonal(0, 2) == 0.0);
     assert(diagonal(1, 2) == 0.0);
+}
 
-    // Test 28: Constructing a zeros matrix
-    std::cout << "Test 28: Constructing a zeros matrix..." << std::endl;
-    Matrix<int> zeros = Matrix<int>::zeros(2, 3);
-    assert(zeros(0, 0) == 0);
-    assert(zeros(0, 2) == 0);
-
-    // Test 29: Constructing a ones matrix
-    std::cout << "Test 29: Constructing a ones matrix..." << std::endl;
-    Matrix<int> ones = Matrix<int>::ones(2, 3);
-    assert(ones(0, 0) == 1);
-    assert(ones(0, 2) == 1);
-
-    // Test 30: Constructing a ones matrix
-    std::cout << "Test 30: Constructing an identity matrix..." << std::endl;
-    Matrix<int> identity1 = Matrix<int>::identity(3, 3);
-    Matrix<int> identity2 = Matrix<int>::identity(5);
-    assert(identity1(0, 0) == 1);
-    assert(identity1(1, 1) == 1);
-    assert(identity1(0, 1) == 0);
-    assert(identity2(2, 2) == 1);
-    assert(identity2(4, 4) == 1);
-    assert(identity2(1, 2) == 0);
-
-    // Test case 31: Test Matrix::random
-    std::cout << "Test 31: Constructing a random matrix..." << std::endl;
-    Matrix<float> randomMatrix = Matrix<float>::random(0.0f, 10.0f, 10, 10);
-    float val1 = randomMatrix(0, 0);
-    float val2 = randomMatrix(1, 1);
-    assert(val1 >= 0.0f && val1 <= 10.0f);
-    assert(val2 >= 0.0f && val2 <= 10.0f);
-
+void testNumpy()
+{
     // Test case 32: Test Matrix::min
     std::cout << "Test 32: Find minimum value of matrix..." << std::endl;
     Matrix<int> minMatrix(2, 3, {5, 2, 7, 1, 9, 4});
@@ -302,15 +307,6 @@ int main()
     assert(absMatrix(1, 1) == 1.0f);
     assert(absMatrix(0, 1) == 2.0f);
     assert(absMatrix(1, 0) == 7.0f);
-
-    // Test case 34: Test Matrix::swapVals
-    std::cout << "Test 35: Swap values of a matrix..." << std::endl;
-    Matrix<int> swapMatrix(2, 2, {5, 2, 7, 1});
-    swapMatrix.swapVals(5, 1);
-    assert(swapMatrix(0, 0) == 1);
-    assert(swapMatrix(1, 0) == 7);
-    assert(swapMatrix(0, 1) == 2);
-    assert(swapMatrix(1, 1) == 5);
 
     // Test case 35: Test Matrix::sort (ascending order)
     std::cout << "Test 35: Sort values of a matrix in ascending order..." << std::endl;
@@ -403,6 +399,27 @@ int main()
     assert(f(3, 0) == 10.1f);
     assert(f(3, 1) == 11.1f);
     assert(f(3, 2) == 12.2f);
+}
+
+void testSwap()
+{
+    // Test case 34: Test Matrix::swapVals
+    std::cout << "Test 35: Swap values of a matrix..." << std::endl;
+    Matrix<int> swapMatrix(2, 2, {5, 2, 7, 1});
+    swapMatrix.swapVals(5, 1);
+    assert(swapMatrix(0, 0) == 1);
+    assert(swapMatrix(1, 0) == 7);
+    assert(swapMatrix(0, 1) == 2);
+    assert(swapMatrix(1, 1) == 5);
+}
+
+int main()
+{
+    testConstructors();
+    testOperators();
+    testLinearAlgebra();
+    testNumpy();
+    testSwap();
 
     std::cout << "All tests passed!" << std::endl;
     return 0;
