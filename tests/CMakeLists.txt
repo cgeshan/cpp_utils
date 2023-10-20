@@ -11,10 +11,13 @@ target_link_libraries(VectorTest cgClassLib)
 
 
 
-add_test(NAME MatrixTest COMMAND cmake --build . --config Release --target MatrixTest)
-add_test(NAME VectorTest COMMAND cmake --build . --config Release --target VectorTest)
+add_test(NAME BuildAll COMMAND cmake --build .)
+add_test(NAME RunMatrixTest COMMAND ./MatrixTest)
+add_test(NAME RunVectorTest COMMAND ./VectorTest)
 
-set_tests_properties(MatrixTest
-                     VectorTest
+set_tests_properties(BuildAll
+                    
+                    RunMatrixTest
+                    RunVectorTest
 
                     PROPERTIES LABELS "cgClass")

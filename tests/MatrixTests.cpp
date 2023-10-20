@@ -34,20 +34,20 @@ void testConstructors()
     assert(mat4(0, 1) == 2);
     assert(mat4(1, 2) == 6);
 
-    // Test 28: Constructing a zeros matrix
-    std::cout << "Test 28: Constructing a zeros matrix..." << std::endl;
+    // Test 5: Constructing a zeros matrix
+    std::cout << "Test 5: Constructing a zeros matrix..." << std::endl;
     Matrix<int> zeros = Matrix<int>::zeros(2, 3);
     assert(zeros(0, 0) == 0);
     assert(zeros(0, 2) == 0);
 
-    // Test 29: Constructing a ones matrix
-    std::cout << "Test 29: Constructing a ones matrix..." << std::endl;
+    // Test 6: Constructing a ones matrix
+    std::cout << "Test 6: Constructing a ones matrix..." << std::endl;
     Matrix<int> ones = Matrix<int>::ones(2, 3);
     assert(ones(0, 0) == 1);
     assert(ones(0, 2) == 1);
 
-    // Test 30: Constructing an identity matrix
-    std::cout << "Test 30: Constructing an identity matrix..." << std::endl;
+    // Test 7: Constructing an identity matrix
+    std::cout << "Test 7: Constructing an identity matrix..." << std::endl;
     Matrix<int> identity1 = Matrix<int>::identity(3, 3);
     Matrix<int> identity2 = Matrix<int>::identity(5);
     assert(identity1(0, 0) == 1);
@@ -57,8 +57,8 @@ void testConstructors()
     assert(identity2(4, 4) == 1);
     assert(identity2(1, 2) == 0);
 
-    // Test case 31: Test Matrix::random
-    std::cout << "Test 31: Constructing a random matrix..." << std::endl;
+    // Test case 8: Test Matrix::random
+    std::cout << "Test 8: Constructing a random matrix..." << std::endl;
     Matrix<float> randomMatrix = Matrix<float>::random(0.0f, 10.0f, 10, 10);
     float val1 = randomMatrix(0, 0);
     float val2 = randomMatrix(1, 1);
@@ -68,94 +68,94 @@ void testConstructors()
 
 void testOperators()
 {
-    // Test 5: Copy assignment operator
-    std::cout << "Test 5: Copy assignment operator..." << std::endl;
+    // Test 9: Copy assignment operator
+    std::cout << "Test 9: Copy assignment operator..." << std::endl;
     std::vector<int> values2 = {1, 2, 3, 4, 5, 6};
     Matrix<int> mat4(2, 3, values2);
     Matrix<int> mat5 = mat4;
     assert(mat5 == mat4);
 
-    // Test 6: Equality operator
-    std::cout << "Test 6: Equality operator..." << std::endl;
+    // Test 10: Equality operator
+    std::cout << "Test 10: Equality operator..." << std::endl;
     assert(mat4 == mat5);
 
-    // Test 7: Addition operator
-    std::cout << "Test 7: Addition operator..." << std::endl;
+    // Test 11: Addition operator
+    std::cout << "Test 11: Addition operator..." << std::endl;
     Matrix<int> mat6({{1, 2}, {3, 4}});
     Matrix<int> mat7({{5, 6}, {7, 8}});
     Matrix<int> sum = mat6 + mat7;
     assert(sum(0, 1) == 8);
     assert(sum(1, 1) == 12);
 
-    // Test 8: Subtraction operator
-    std::cout << "Test 8: Subtraction operator..." << std::endl;
+    // Test 12: Subtraction operator
+    std::cout << "Test 12: Subtraction operator..." << std::endl;
     Matrix<int> diff = mat6 - mat7;
     assert(diff(0, 1) == -4);
     assert(diff(1, 1) == -4);
 
-    // Test 9: Multiplication operator
-    std::cout << "Test 9: Multiplication operator..." << std::endl;
+    // Test 13: Multiplication operator
+    std::cout << "Test 13: Multiplication operator..." << std::endl;
     Matrix<int> product = mat6 * mat7;
     assert(product(0, 0) == 19);
     assert(product(1, 1) == 50);
 
-    // Test 10: Multiplication by scalar
-    std::cout << "Test 10: Multiplication by scalar..." << std::endl;
+    // Test 14: Multiplication by scalar
+    std::cout << "Test 14: Multiplication by scalar..." << std::endl;
     Matrix<int> scaled = mat4 * 2;
     assert(scaled(0, 1) == 4);
     assert(scaled(1, 2) == 12);
 
-    // Test 11: Division by scalar
-    std::cout << "Test 11: Division by scalar..." << std::endl;
+    // Test 15: Division by scalar
+    std::cout << "Test 15: Division by scalar..." << std::endl;
     Matrix<int> divided = mat4 / 2;
     assert(divided(0, 1) == 1);
     assert(divided(1, 2) == 3);
 
-    // Test 12: Addition assignment operator
-    std::cout << "Test 12: Addition assignment operator..." << std::endl;
+    // Test 16: Addition assignment operator
+    std::cout << "Test 16: Addition assignment operator..." << std::endl;
     Matrix<int> mat8(mat4);
     mat8 += mat5;
     assert(mat8(0, 1) == 4);
     assert(mat8(1, 2) == 12);
 
-    // Test 13: Subtraction assignment operator
-    std::cout << "Test 13: Subtraction assignment operator..." << std::endl;
+    // Test 17: Subtraction assignment operator
+    std::cout << "Test 17: Subtraction assignment operator..." << std::endl;
     Matrix<int> mat9(mat4);
     mat9 -= mat5;
     assert(mat9(0, 1) == 0);
     assert(mat9(1, 2) == 0);
 
-    // Test 14: Multiplication assignment operator
-    std::cout << "Test 14: Multiplication assignment operator..." << std::endl;
+    // Test 18: Multiplication assignment operator
+    std::cout << "Test 18: Multiplication assignment operator..." << std::endl;
     Matrix<int> mat10({{1, 2}, {3, 4}});
     Matrix<int> mat11({{5, 6}, {7, 8}});
     mat10 *= mat11;
     assert(mat10 == Matrix<int>({{19, 22}, {43, 50}}));
 
-    // Test 15: Multiplication assignment operator for matrices of different sizes
-    std::cout << "Test 15: Multiplication assignment operator for matrices of different sizes..." << std::endl;
+    // Test 19: Multiplication assignment operator for matrices of different sizes
+    std::cout << "Test 19: Multiplication assignment operator for matrices of different sizes..." << std::endl;
     Matrix<int> mat12({{1, 2, 3}, {4, 5, 6}});
     Matrix<int> mat13({{7, 8}, {9, 10}, {11, 12}});
     mat12 *= mat13;
     assert(mat12 == Matrix<int>({{58, 64}, {139, 154}}));
 
-    // Test 16: Scalar multiplication assignment operator
-    std::cout << "Test 16: Scalar multiplication assignment operator..." << std::endl;
+    // Test 20: Scalar multiplication assignment operator
+    std::cout << "Test 20: Scalar multiplication assignment operator..." << std::endl;
 
-    // Test 16.1: Scalar multiplication for a 2x2 matrix
+    // Test 2.1: Scalar multiplication for a 2x2 matrix
     Matrix<int> mat14({{1, 2}, {3, 4}});
     int scalar1 = 2;
     mat14 *= scalar1;
     assert(mat14 == Matrix<int>({{2, 4}, {6, 8}}));
 
-    // Test 16.2: Scalar multiplication for a 3x3 matrix
+    // Test 20.2: Scalar multiplication for a 3x3 matrix
     Matrix<int> mat15({{1, 2, 3}, {4, 5, 6}, {7, 8, 9}});
     int scalar2 = 3;
     mat15 *= scalar2;
     assert(mat15 == Matrix<int>({{3, 6, 9}, {12, 15, 18}, {21, 24, 27}}));
 
-    // Test 18: Inequality operator
-    std::cout << "Test 18: Inequality operator..." << std::endl;
+    // Test 21: Inequality operator
+    std::cout << "Test 21: Inequality operator..." << std::endl;
     Matrix<int> mat17({{1, 2}, {3, 4}});
     Matrix<int> mat18({{1, 2}, {3, 4}});
     Matrix<int> mat19({{1, 2, 3}, {4, 5, 6}});
@@ -166,8 +166,8 @@ void testOperators()
 
 void testLinearAlgebra()
 {
-    // Test 17: Matrix transpose
-    std::cout << "Test 17: Matrix transpose..." << std::endl;
+    // Test 22: Matrix transpose
+    std::cout << "Test 22: Matrix transpose..." << std::endl;
     Matrix<int> mat16(3, 2);
     mat16(0, 0) = 1;
     mat16(0, 1) = 2;
@@ -186,13 +186,13 @@ void testLinearAlgebra()
     assert(transposed16(1, 1) == 4);
     assert(transposed16(1, 2) == 6);
 
-    // Test 19: Determinant of a square matrix
-    std::cout << "Test 19: Determinant of a square matrix..." << std::endl;
+    // Test 23: Determinant of a square matrix
+    std::cout << "Test 23: Determinant of a square matrix..." << std::endl;
     Matrix<int> mat20({{1, 2, 3}, {4, 5, 6}, {7, 8, 9}});
     assert(mat20.determinant() == 0); // The determinant of this matrix is 0
 
-    // Test 20: Inverse of a square matrix
-    std::cout << "Test 20: Inverse of a square matrix..." << std::endl;
+    // Test 24: Inverse of a square matrix
+    std::cout << "Test 24: Inverse of a square matrix..." << std::endl;
     Matrix<double> mat21({{1.0, 2.0, 1.0}, {0.0, 1.0, 2.0}, {3.0, 0.0, 1.0}});
     Matrix<double> inverse21 = mat21.inverse();
     Matrix<double> identity21 = mat21 * inverse21;
@@ -213,21 +213,21 @@ void testLinearAlgebra()
         }
     }
 
-    // Test 21: Minor matrix
-    std::cout << "Test 21: Minor matrix..." << std::endl;
+    // Test 25: Minor matrix
+    std::cout << "Test 25: Minor matrix..." << std::endl;
     Matrix<int> mat22({{1, 2, 3}, {4, 5, 6}, {7, 8, 9}});
     Matrix<int> minor22 = mat22.getMinor(0, 1);
     assert(minor22 == Matrix<int>({{4, 6}, {7, 9}}));
 
     // Test 22: Full rank of a matrix
-    std::cout << "Test 22: Full rank of a matrix..." << std::endl;
+    std::cout << "Test 26: Full rank of a matrix..." << std::endl;
     Matrix<int> mat23({{1, 2, 3}, {4, 5, 6}, {7, 8, 9}});
     Matrix<int> mat24({{1, 0, 0}, {0, 2, 0}, {0, 0, 3}});
     assert(!mat23.isFullRank());
     assert(mat24.isFullRank());
 
     // Test 23: Get rank of a matrix
-    std::cout << "Test 23: Get rank of a matrix..." << std::endl;
+    std::cout << "Test 26: Get rank of a matrix..." << std::endl;
     Matrix<int> mat25({{1, 2, 3}, {4, 5, 6}, {7, 8, 9}});
     Matrix<int> mat26({{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}});
     Matrix<int> mat27({{1, 0, 0}, {0, 2, 0}, {0, 0, 3}});
@@ -238,14 +238,14 @@ void testLinearAlgebra()
     assert(mat28.getRank() == 0);
 
     // Test 24: Swap rows in a matrix
-    std::cout << "Test 24: Swap rows in a matrix..." << std::endl;
+    std::cout << "Test 27: Swap rows in a matrix..." << std::endl;
     Matrix<int> mat29({{1, 2, 3}, {4, 5, 6}, {7, 8, 9}});
     Matrix<int> expectedMat({{4, 5, 6}, {1, 2, 3}, {7, 8, 9}});
     mat29.swapRows(0, 1);
     assert(mat29 == expectedMat);
 
     // Test 25: Upper Triangular
-    std::cout << "Test 25: Upper Triangular..." << std::endl;
+    std::cout << "Test 28: Upper Triangular..." << std::endl;
     Matrix<double> matUpperTriangular({{1.0, 2.0, 3.0},
                                        {0.0, 4.0, 5.0},
                                        {0.0, 0.0, 6.0}});
@@ -255,7 +255,7 @@ void testLinearAlgebra()
     assert(upperTriangular(2, 1) == 0.0);
 
     // Test 26: Lower Triangular
-    std::cout << "Test 26: Lower Triangular..." << std::endl;
+    std::cout << "Test 29: Lower Triangular..." << std::endl;
 
     Matrix<double> matLowerTriangular({{1.0, 0.0, 0.0},
                                        {2.0, 3.0, 0.0},
@@ -266,7 +266,7 @@ void testLinearAlgebra()
     assert(lowerTriangular(1, 2) == 0.0);
 
     // Test 27: Diagonal
-    std::cout << "Test 27: Diagonal..." << std::endl;
+    std::cout << "Test 30: Diagonal..." << std::endl;
 
     Matrix<double> matDiagonal({{1.0, 0.0, 0.0},
                                 {0.0, 2.0, 0.0},
@@ -280,19 +280,19 @@ void testLinearAlgebra()
 void testNumpy()
 {
     // Test case 32: Test Matrix::min
-    std::cout << "Test 32: Find minimum value of matrix..." << std::endl;
+    std::cout << "Test 31: Find minimum value of matrix..." << std::endl;
     Matrix<int> minMatrix(2, 3, {5, 2, 7, 1, 9, 4});
     int minVal = minMatrix.getMin();
     assert(minVal == 1);
 
     // Test case 33: Test Matrix::min
-    std::cout << "Test 33: Find maxmimum value of matrix..." << std::endl;
+    std::cout << "Test 32: Find maxmimum value of matrix..." << std::endl;
     Matrix<int> maxMatrix(2, 3, {5, 2, 7, 1, 9, 4});
     int maxVal = maxMatrix.getMax();
     assert(maxVal == 9);
 
     // Test case 34: Test Matrix::mean
-    std::cout << "Test 34: Find mean value of int and float matrix..." << std::endl;
+    std::cout << "Test 33: Find mean value of int and float matrix..." << std::endl;
     Matrix<float> floatMatrix(2, 3, {5.0f, -2.0f, -7.0f, 1.0f, 9.0f, 4.0f});
     int meanValInt = minMatrix.mean();
     float meanValFloat = floatMatrix.mean();
@@ -300,7 +300,7 @@ void testNumpy()
     assert(meanValFloat == (5.0f - 2.0f - 7.0f + 1.0f + 9.0f + 4.0f) / 6.0f);
 
     // Test case 34: Test Matrix::abs
-    std::cout << "Test 35: Find absolute value of a matrix..." << std::endl;
+    std::cout << "Test 34: Find absolute value of a matrix..." << std::endl;
     Matrix<float> mat30(3, 2, {5.0f, -2.0f, -7.0f, 1.0f, 9.0f, 4.0f});
     Matrix<float> absMatrix = mat30.abs();
     assert(absMatrix(0, 0) == 5.0f);
@@ -337,22 +337,24 @@ void testNumpy()
     assert(reverseSortMatrix(2, 2) == 1);
 
     // Test case 36: Test Matrix::median for even-sized matrix
-    std::cout << "Test 36: Median of a matrix (even-sized)..." << std::endl;
+    std::cout << "Test 37: Median of a matrix (even-sized)..." << std::endl;
     Matrix<int> evenSizedMatrix(2, 2, {3, 2, 1, 4});
     int medianEven = evenSizedMatrix.median();
-    Matrix<float> evenSizedMatrix2(2, 2, {3, 2, 1, 4});
-    float medianEven2 = evenSizedMatrix2.median();
+    Matrix<int> evenSizedMatrix2(2, 2, {3, 2, 1, 4});
+    double medianEven2 = evenSizedMatrix2.median();
+    std::cout << medianEven2 << std::endl;
+
     assert(medianEven == 2);
     assert(medianEven2 == 2.5);
 
     // Test case 37: Test Matrix::median for odd-sized matrix
-    std::cout << "Test 37: Median of a matrix (odd-sized)..." << std::endl;
+    std::cout << "Test 38: Median of a matrix (odd-sized)..." << std::endl;
     Matrix<int> oddSizedMatrix(3, 3, {7, 1, 5, 2, 4, 6, 3, 9, 8});
     int medianOdd = oddSizedMatrix.median();
     assert(medianOdd == 5);
 
     // Test case 38: Test Matrix::hstack
-    std::cout << "Test 38: Horizontal Stack of Matrices..." << std::endl;
+    std::cout << "Test 39: Horizontal Stack of Matrices..." << std::endl;
     Matrix<int> matrixA(2, 2, {1, 2, 3, 4});
     Matrix<int> matrixB(2, 3, {5, 6, 7, 8, 9, 10});
     Matrix<int> hstackResult = matrixA.hstack(matrixB);
@@ -362,7 +364,7 @@ void testNumpy()
     assert(hstackResult(1, 4) == 10);
 
     // Test case 39: Test Matrix::vstack
-    std::cout << "Test 39: Vertical Stack of Matrices..." << std::endl;
+    std::cout << "Test 40: Vertical Stack of Matrices..." << std::endl;
     Matrix<int> matrixC(2, 2, {1, 2, 3, 4});
     Matrix<int> matrixD(3, 2, {5, 6, 7, 8, 9, 10});
     Matrix<int> vstackResult = matrixC.vstack(matrixD);
@@ -371,7 +373,7 @@ void testNumpy()
     assert(vstackResult(3, 1) == 8);
 
     // Test case 40: Test Matrix::reshape
-    std::cout << "Test 40: Reshaping matrices..." << std::endl;
+    std::cout << "Test 41: Reshaping matrices..." << std::endl;
     Matrix<int> A(2, 3, {1, 2, 3, 4, 5, 6});
     A.reshape(3, 2);
     assert(A.getRowSize() == 3);
@@ -404,13 +406,45 @@ void testNumpy()
 void testSwap()
 {
     // Test case 34: Test Matrix::swapVals
-    std::cout << "Test 35: Swap values of a matrix..." << std::endl;
+    std::cout << "Test 42: Swap values of a matrix..." << std::endl;
     Matrix<int> swapMatrix(2, 2, {5, 2, 7, 1});
     swapMatrix.swapVals(5, 1);
     assert(swapMatrix(0, 0) == 1);
     assert(swapMatrix(1, 0) == 7);
     assert(swapMatrix(0, 1) == 2);
     assert(swapMatrix(1, 1) == 5);
+}
+
+void additionalTests()
+{
+    std::cout << "Test 43: Standard deviation..." << std::endl;
+    Matrix<int> stdDevTestMat(2, 4, {10, 12, 23, 23, 16, 23, 21, 16});
+    assert(fabs(stdDevTestMat.stdDev() - 4.898979 < 1e-6));
+
+    // Test 45: Variance of a matrix with a single element should be 0.0
+    std::cout << "Test 45: Variance of a matrix with a single element..." << std::endl;
+    Matrix<int> singleElementMat(1, 1, {42});
+    assert(singleElementMat.variance() == 0.0);
+
+    // Test 46: Variance of a matrix with known values
+    std::cout << "Test 46: Variance of a matrix with known values..." << std::endl;
+    Matrix<double> knownValuesMat(3, 3, {1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0});
+    assert(fabs(knownValuesMat.variance() - 6.66666667 < 1e-6));
+
+    // Test 47: Variance of a matrix with negative values
+    std::cout << "Test 47: Variance of a matrix with negative values..." << std::endl;
+    Matrix<int> negativeValuesMat(2, 2, {-1, -2, -3, -4});
+    assert((negativeValuesMat.variance()) == 1.25);
+
+    // Test 48: Variance of a large random matrix
+    std::cout << "Test 48: Variance of a large random matrix..." << std::endl;
+    Matrix<double> largeRandomMat = Matrix<double>::random(0.0, 10.0, 100, 100);
+    assert(largeRandomMat.variance() >= 0.0);
+
+    // Test 49: Variance of a matrix with all equal values should be 0.0
+    std::cout << "Test 49: Variance of a matrix with all equal values..." << std::endl;
+    Matrix<int> allEqualValuesMat(2, 3, {3, 3, 3, 3, 3, 3});
+    assert(allEqualValuesMat.variance() == 0.0);
 }
 
 int main()
@@ -420,6 +454,7 @@ int main()
     testLinearAlgebra();
     testNumpy();
     testSwap();
+    additionalTests();
 
     std::cout << "All tests passed!" << std::endl;
     return 0;

@@ -11,7 +11,9 @@ private:
     T x, y, z;
 
 public:
-    // Constructors
+    /*
+        Constructors
+    */
     Vector()
     {
         x = 0;
@@ -26,7 +28,9 @@ public:
         this->z = z;
     }
 
-    // Public getters for x, y, and z
+    /*
+        Getters
+    */
     T getX() const
     {
         return x;
@@ -42,7 +46,9 @@ public:
         return z;
     }
 
-    // Public setters for x, y, and z
+    /*
+        Setters
+    */
     void setX(T x)
     {
         this->x = x;
@@ -58,24 +64,27 @@ public:
         this->z = z;
     }
 
-    // Vector addition
+    /*
+        Arithematic operators
+    */
     Vector operator+(const Vector &vec) const
     {
         return Vector(x + vec.x, y + vec.y, z + vec.z);
     }
 
-    // Vector subtraction
     Vector operator-(const Vector &vec) const
     {
         return Vector(x - vec.x, y - vec.y, z - vec.z);
     }
 
-    // Scalar multiplication
     Vector operator*(T scalar) const
     {
         return Vector(x * scalar, y * scalar, z * scalar);
     }
 
+    /*
+        Vector specific arithematic
+    */
     // Dot product of vectors
     T dot(const Vector &vec) const
     {
@@ -102,14 +111,8 @@ public:
     {
         T mag = magnitude();
         if (mag == 0)
-            return *this; // Avoid division by zero
+            return *this;
         return Vector(x / mag, y / mag, z / mag);
-    }
-
-    // Print the vector
-    void print() const
-    {
-        std::cout << "(" << x << ", " << y << ", " << z << ")" << std::endl;
     }
 
     // Angle between two vectors in radians
@@ -164,6 +167,43 @@ public:
     {
         return x == 0 && y == 0 && z == 0;
     }
+
+    /*
+        Stream operators
+    */
+
+    template <class U>
+    friend std::ostream &operator<<(std::ostream &os, const Vector<U> &vec);
+
+    // Friend stream input operator
+    template <class U>
+    friend std::istream &operator>>(std::istream &is, Vector<U> &ve);
+
+    template <class U>
+    friend std::ofstream &operator<<(std::ofstream &ofs, const Vector<U> &vec);
+
+    template <class U>
+    friend std::ifstream &operator>>(std::ifstream &ifs, Vector<U> &ve);
 };
+
+template <class T>
+std::ostream &operator<<(std::ostream &os, const Vector<T> &vec)
+{
+    os << "(" << vec.x << ", " << vec.y << ", " << vec.z << ")";
+    return os;
+}
+
+template <class T>
+std::istream &operator>>(std::istream &is, Vector<T> &vec)
+{
+    T x, y, z;
+    if (is >> x >> y >> z)
+    {
+        vec.setX(x);
+        vec.setY(y);
+        vec.setZ(z);
+    }
+    return is;
+}
 
 #endif
